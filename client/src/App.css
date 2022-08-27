@@ -31,4 +31,25 @@ button:hover{
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+}
+
+.employee{
+  width: 1000px;
+  height: 100px;
+  background-color: lightgray;
+  border: 1px solid black;
+  margin: 10px;
+  display: flex;
+  padding: 10px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+
+
+.employee > h2{
+  margin: 30px;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
 }

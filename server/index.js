@@ -35,6 +35,16 @@ app.post('/create', (req, res)=>{
     })
 })
 
+app.get('/employees', (req, res)=>{
+    db.query("Select * from employees", (err, result)=>{
+        if (err){
+            console.log(err)
+        } else{
+            res.send(result)
+        }
+    })
+})
+
 app.listen(3001, ()=>{
     console.log("Server is running at 3001")
 })

@@ -22,16 +22,25 @@ function App() {
       position: position,
       salary: salary
     }).then((response)=>{
-      console.log(response)
+      setEmployees([...employees, 
+        {
+          name: name,
+          age: age,
+          country: country,
+          position:  position,
+          salary: salary
+        }
+      
+      ])
     })
   }
 
 
   const getEmployee = () => {
-    axios.get("http://localhost:3001/")
+    axios.get("http://localhost:3001/employees")
       .then((response)=>{
         console.log(response)
-        setEmployees(response)
+        setEmployees(response.data)
       })
   }
 
@@ -54,7 +63,7 @@ function App() {
           <label>Salary</label>
           <input type="number" value={salary} onChange={e => setSalary(e.target.value)}/>
       
-          <button onClick={getEmployee}>Add Employee</button>
+          <button onClick={addEmployee}>Add Employee</button>
       
 
       </div>
@@ -63,7 +72,20 @@ function App() {
 
     <div className='employees'>
 
-      <button onClick={showEmployee}>Show Employees</button>
+      <button onClick={getEmployee}>Show Employees</button>
+
+      {employees.map((employee, id)=>(
+
+        <div key={id} className="employee">
+
+          <h2>Name: <span>{employee.name}</span></h2>
+          <h2>Age: <span>{employee.age}</span></h2>
+          <h2>Country: <span>{employee.country}</span></h2>
+          <h2>Position: <span>{employee.position}</span></h2>
+          <h2>Salary: <span>{employee.salary}</span></h2>
+
+        </div>
+      ))}
 
     </div>
 
