@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import './App.css';
+import axios from 'axios';
 
 function App() {
 
@@ -10,6 +11,29 @@ function App() {
   const [position, setPosition] = useState('')
   const [salary, setSalary] = useState(0)
 
+  const [employees, setEmployees] = useState([]);
+
+
+  const addEmployee = () => {
+    axios.post("http://localhost:3001/create", {
+      name:name,
+      age: age,
+      country: country,
+      position: position,
+      salary: salary
+    }).then((response)=>{
+      console.log(response)
+    })
+  }
+
+
+  const getEmployee = () => {
+    axios.get("http://localhost:3001/")
+      .then((response)=>{
+        console.log(response)
+        setEmployees(response)
+      })
+  }
 
   return (
     <div className="App">
@@ -30,9 +54,18 @@ function App() {
           <label>Salary</label>
           <input type="number" value={salary} onChange={e => setSalary(e.target.value)}/>
       
-          <button>Add Employee</button>
+          <button onClick={getEmployee}>Add Employee</button>
       
+
       </div>
+
+      <hr style={{height: "1px", width: "100%"}}/>
+
+    <div className='employees'>
+
+      <button onClick={showEmployee}>Show Employees</button>
+
+    </div>
 
     </div>
   );
