@@ -45,6 +45,36 @@ app.get('/employees', (req, res)=>{
     })
 })
 
+
+app.put('/update', (req, res)=>{
+    const id = req.body.id
+    const salary = req.body.salary
+
+    db.query("update employees set salary=? where id=?", [salary, id], (err, result)=>{
+        if (err){
+            console.log(err)
+
+        }else{
+            res.send(result)
+        }
+    })
+})
+
+app.delete('/delete/:id', (req, res)=>{
+    const id = req.params.id;
+
+    db.query("delete from employees where id=?", id, (err, result)=>{
+        
+        if (err){
+            console.log('Your server is running on port 3001')
+        }else{
+            res.send(result)
+        }
+
+    })
+})
+
+
 app.listen(3001, ()=>{
     console.log("Server is running at 3001")
 })

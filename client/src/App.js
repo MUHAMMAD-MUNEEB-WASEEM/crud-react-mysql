@@ -13,6 +13,8 @@ function App() {
 
   const [employees, setEmployees] = useState([]);
 
+  const [newSalary, setNewSalary] = useState(0)
+
 
   const addEmployee = () => {
     axios.post("http://localhost:3001/create", {
@@ -41,6 +43,37 @@ function App() {
       .then((response)=>{
         console.log(response)
         setEmployees(response.data)
+      })
+  }
+
+
+  const updateEmployeeSalary = (id) => {
+    axios.put("http://localhost:3001/update", { salary: newSalary, id: id }).then(
+      (response) => {
+        setEmployees(
+          employees.map((val) => {
+            return val.id == id
+              ? {
+                  id: val.id,
+                  name: val.name,
+                  country: val.country,
+                  age: val.age,
+                  position: val.position,
+                  salary: newSalary,
+                }
+              : val;
+          })
+        );
+      }
+    );
+  };
+
+  const deleteEmployee = (id) => {
+    axios.delete(`http://localhost:3001/delete/${id}`)
+      .then((response)=>{
+        setEmployees(employees.filter((val)=>{
+          return val.id != id
+        }))
       })
   }
 
@@ -77,12 +110,35 @@ function App() {
       {employees.map((employee, id)=>(
 
         <div key={id} className="employee">
+         
+          <div>
+            <h2>Name: <span>{employee.name}</span></h2>
+            <h2>Age: <span>{employee.age}</span></h2>
+            <h2>Country: <span>{employee.country}</span></h2>
+            <h2>Position: <span>{employee.position}</span></h2>
+            <h2>Salary: <span>{employee.salary}</span></h2>
+          </div>
+         
+          <div className='update_delete'>
+            <input 
+            type="text" 
+            placeholder='2000...'
+            value={newSalary}
+            onChange= {e=>setNewSalary(e.target.value)}
+            style={{display: 'flex', flexDirection:"column"}}
+            />
+            
 
-          <h2>Name: <span>{employee.name}</span></h2>
-          <h2>Age: <span>{employee.age}</span></h2>
-          <h2>Country: <span>{employee.country}</span></h2>
-          <h2>Position: <span>{employee.position}</span></h2>
-          <h2>Salary: <span>{employee.salary}</span></h2>
+            <div className='update_delete_button'>
+              <button onClick={()=>updateEmployeeSalary(id)}>Update</button>
+
+              <button onClick={()=>deleteEmployee(id)}>Delete</button>
+
+            </div>
+            
+            
+          
+          </div>
 
         </div>
       ))}
